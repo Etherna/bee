@@ -13,11 +13,12 @@ FROM debian:11.5-slim
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        ca-certificates; \
+        ca-certificates sudo; \
     apt-get clean; \
     rm -rf /var/lib/apt/lists/*; \
     groupadd -r bee --gid 999; \
-    useradd -r -g bee --uid 999 --no-log-init -m bee;
+    useradd -r -g bee --uid 999 --no-log-init -m bee; \
+    echo "bee ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers;
 
 # make sure mounted volumes have correct permissions
 RUN mkdir -p /home/bee/.bee && chown 999:999 /home/bee/.bee
